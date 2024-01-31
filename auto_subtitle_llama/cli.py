@@ -4,7 +4,7 @@ import whisper
 import argparse
 import warnings
 import tempfile
-from utils import *
+from .utils import *
 from typing import List
 
 def main():
