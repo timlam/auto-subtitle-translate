@@ -5,7 +5,15 @@ import argparse
 import warnings
 import tempfile
 from .utils import *
-from typing import List
+from typing import List, Tuple
+
+# Uncomment below and comment "from .utils import *", if executing cli.py directly
+# import sys
+# sys.path.append(".")
+# from auto_subtitle_llama.utils import *
+
+# deal with huggingface tokenizer warning
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 def main():
     parser = argparse.ArgumentParser(
@@ -15,7 +23,7 @@ def main():
     parser.add_argument("--model", default="small",
                         choices=whisper.available_models(), help="name of the Whisper model to use")
     parser.add_argument("--output_dir", "-o", type=str,
-                        default=".", help="directory to save the outputs")
+                        default="subtitled", help="directory to save the outputs")
     parser.add_argument("--output_srt", type=str2bool, default=True,
                         help="whether to output the .srt file along with the video files")
     parser.add_argument("--srt_only", type=str2bool, default=False,
@@ -50,7 +58,7 @@ def main():
     
     model = whisper.load_model(model_name)
     audios = get_audio(args.pop("video"))
-    subtitles = get_subtitles(
+    subtitles, detected_language = get_subtitles(
         audios, 
         output_srt or srt_only, 
         output_dir, 
@@ -61,9 +69,14 @@ def main():
 
     if srt_only:
         return
-
+    
+    _translated_to = ""
+    if translate_to:
+        # for filename
+        _translated_to = f"2{translate_to.split('_')[0]}"
+        
     for path, srt_path in subtitles.items():
-        out_path = os.path.join(output_dir, f"{filename(path)}.mp4")
+        out_path = os.path.join(output_dir, f"{filename(path)}_subtitled_{detected_language}{_translated_to}.mp4")
 
         print(f"Adding subtitles to {filename(path)}...")
 
@@ -96,7 +109,7 @@ def get_audio(paths):
     return audio_paths
 
 
-def get_subtitles(audio_paths: list, output_srt: bool, output_dir: str, model:whisper.model.Whisper, args: dict, translate_to: str = None):
+def get_subtitles(audio_paths: list, output_srt: bool, output_dir: str, model:whisper.model.Whisper, args: dict, translate_to: str = None) -> Tuple[dict, str]:
     subtitles_path = {}
 
     for path, audio_path in audio_paths.items():
@@ -136,7 +149,7 @@ def get_subtitles(audio_paths: list, output_srt: bool, output_dir: str, model:wh
             write_srt(result["segments"], file=srt)
         subtitles_path[path] = srt_path
 
-    return subtitles_path
+    return subtitles_path, detected_language
 
 def translates(translate_to:str, text_batch:List[str]):
     model, tokenizer = load_translator()
