@@ -2,6 +2,14 @@
 
 This repository uses `ffmpeg` and [OpenAI's Whisper](https://openai.com/blog/whisper) to automatically generate and overlay subtitles on any video. Then, it uses [pretrained Llama2](https://huggingface.co/SnypzZz/Llama2-13b-Language-translate) to translate the subtitles to 50 languages.
 
+##### [Demo Video](https://youtu.be/vkvTpmQ7M48?si=qQLvYzwtsQ4djo4K)
+<p align=“center” width=“100%”>
+    <img src="https://github.com/YJ-20/auto-subtitle-llama/assets/68987494/85a41810-75ac-44f8-9b75-35c599032619" width="49%">
+    <img src="https://github.com/YJ-20/auto-subtitle-llama/assets/68987494/88d42ad7-da9f-4749-9923-4ec9fc9ed040" width="49%">
+    <img src="https://github.com/YJ-20/auto-subtitle-llama/assets/68987494/1c255fae-a1c5-4cb1-a60c-87a6aabfcf04" width="49%">
+    <img src="https://github.com/YJ-20/auto-subtitle-llama/assets/68987494/91ad2860-18a7-460c-91e6-011265308433" width="49%">
+</p>
+
 ## Installation
 
 To get started, you'll need Python 3.7 or newer. Install the binary by running the following command:
