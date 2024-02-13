@@ -1,4 +1,4 @@
-# Automatic subtitles in your videos
+# Automatic subtitles & translates in your videos
 
 This repository uses `ffmpeg` and [OpenAI's Whisper](https://openai.com/blog/whisper) to automatically generate and overlay subtitles on any video. Then, it uses [pretrained Llama2](https://huggingface.co/SnypzZz/Llama2-13b-Language-translate) to translate the subtitles to 50 languages.
 
