@@ -35,7 +35,7 @@ The following command will generate a `subtitled/video.mp4` file contained the i
 
     auto_subtitle_llama /path/to/video.mp4 -o subtitled/
 
-The default setting (which selects the `small` model) works well for transcribing English. You can optionally use a bigger model for better results (especially with other languages). The available models are `tiny`, `tiny.en`, `base`, `base.en`, `small`, `small.en`, `medium`, `medium.en`, `large`.
+The default setting (which selects the `large` model) works well for transcribing English. You can optionally use a bigger model for better results (especially with other languages). The available models are `tiny`, `tiny.en`, `base`, `base.en`, `small`, `small.en`, `medium`, `medium.en`, `large`.
 
     auto_subtitle_llama /path/to/video.mp4 --model medium
 

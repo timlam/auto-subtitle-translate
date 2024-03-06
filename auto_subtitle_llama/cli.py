@@ -6,6 +6,7 @@ import warnings
 import tempfile
 from .utils import *
 from typing import List, Tuple
+from tqdm import tqdm
 
 # Uncomment below and comment "from .utils import *", if executing cli.py directly
 # import sys
@@ -20,7 +21,7 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("video", nargs="+", type=str,
                         help="paths to video files to transcribe")
-    parser.add_argument("--model", default="small",
+    parser.add_argument("--model", default="large",
                         choices=whisper.available_models(), help="name of the Whisper model to use")
     parser.add_argument("--output_dir", "-o", type=str,
                         default="subtitled", help="directory to save the outputs")
@@ -147,19 +148,26 @@ def get_subtitles(audio_paths: list, output_srt: bool, output_dir: str, model:wh
         
         with open(srt_path, "w", encoding="utf-8") as srt:
             write_srt(result["segments"], file=srt)
+        print(f"srt file is saved: {srt_path}")
         subtitles_path[path] = srt_path
 
     return subtitles_path, detected_language
 
-def translates(translate_to:str, text_batch:List[str]):
+def translates(translate_to: str, text_batch: List[str], max_batch_size: int = 32):
     model, tokenizer = load_translator()
     
-    model_inputs = tokenizer(text_batch, return_tensors="pt", padding=True)
-    generated_tokens = model.generate(
-        **model_inputs,
-        forced_bos_token_id=tokenizer.lang_code_to_id[translate_to]
-    )
-    translated_batch = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+    # split text_batch into max_batch_size
+    divided_text_batches = [text_batch[i:i+max_batch_size] for i in range(0, len(text_batch), max_batch_size)]
+    
+    translated_batch = []
+    
+    for batch in tqdm(divided_text_batches, desc="batch translate"):
+        model_inputs = tokenizer(batch, return_tensors="pt", padding=True)
+        generated_tokens = model.generate(
+            **model_inputs,
+            forced_bos_token_id=tokenizer.lang_code_to_id[translate_to]
+        )
+        translated_batch.extend(tokenizer.batch_decode(generated_tokens, skip_special_tokens=True))
     
     return translated_batch
 

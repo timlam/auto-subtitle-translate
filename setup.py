@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    version="1.0.3",
+    version="1.0.6",
     name="auto_subtitle_llama",
     packages=find_packages(),
     py_modules=["auto_subtitle_llama"],
