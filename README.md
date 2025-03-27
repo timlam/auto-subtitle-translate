@@ -26,7 +26,7 @@ This repository uses `ffmpeg` and [OpenAI's Whisper](https://openai.com/blog/whi
 
 To get started, you'll need Python 3.7 or newer. Install the binary by running the following command:
 
-    pip install git+https://github.com/YJ-20/auto-subtitle-llama
+    pip install git+https://github.com/timlam/auto-subtitle-llama
 
 You'll also need to install [`ffmpeg`](https://ffmpeg.org/), which is available from most package managers:
 
