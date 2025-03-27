@@ -1,5 +1,13 @@
 # Automatic subtitles & translates in your videos
 
+This also includes hardware acceleration for Llama2 and Whisper.
+Will fall back to CPU if no GPU is available.
+
+Ensure PyTorch and other dependencies are installed:
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install openai-whisper transformers
+
+
 This repository uses `ffmpeg` and [OpenAI's Whisper](https://openai.com/blog/whisper) to automatically generate and overlay subtitles on any video. Then, it uses [pretrained Llama2](https://huggingface.co/SnypzZz/Llama2-13b-Language-translate) to translate the subtitles to 50 languages.
 
 ##### [Demo Video](https://youtu.be/vkvTpmQ7M48?si=qQLvYzwtsQ4djo4K)
